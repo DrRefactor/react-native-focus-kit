@@ -2,11 +2,13 @@ import { useRef, useCallback, useState, useMemo } from "react";
 import { FocusableElement, FocusableElementWithGeometry } from "./SpatialTypes";
 import { useKeyDownListener, ArrowKey, isHorizontal, isPositivelyOriented } from "../hooks/useKeyDownListener";
 import { FocusableLayerContextType } from "./FocusableLayer";
+import { View } from "react-native";
+import { measureView } from "./SpatialHelpers";
 
 export function useMeasure() {
-  const ref = useRef<HTMLDivElement>();
+  const ref = useRef<View>();
 
-  const measure = useCallback(() => ref.current?.getBoundingClientRect(), []);
+  const measure = useCallback(() => measureView(ref.current), []);
 
   return {ref, measure}
 }
@@ -87,14 +89,18 @@ const calculateDistanceToDirectionalExtension = (focusedElement: FocusableElemen
   return Math.abs(delta);
 }
 
-function findClosest(elements: FocusableElement[], focusedElement: FocusableElement, key: ArrowKey): FocusableElement | undefined {
+async function findClosest(elements: FocusableElement[], focusedElement: FocusableElement, key: ArrowKey): Promise<FocusableElement | undefined> {
   const focusedElementWithGeometry = {
     element: focusedElement,
-    geometry: focusedElement.measure()
+    geometry: await focusedElement.measure()
   };
 
-  return elements
-    .map(element => ({element, geometry: element.measure()}))
+  const elementsWithGeometry = await Promise.all(
+    elements
+      .map(async element => ({element, geometry: await element.measure()}))
+  )
+
+  return elementsWithGeometry
     .filter(({geometry}) => geometry != null)
     .filter(isReachable(focusedElementWithGeometry, key))
     .reduce((closest, candidate) => {
@@ -141,7 +147,7 @@ export function useFocusNavigator({
   focusedElement?: FocusableElement;
   requestFocus: (element: FocusableElement) => void;
 }) {
-  useKeyDownListener(key => {
+  useKeyDownListener(async key => {
     if (focusedElement == null) {
       // todo
       // this is bad initial focus calculation, implement some reasonable strategy
@@ -151,7 +157,7 @@ export function useFocusNavigator({
       return;
     }
 
-    const closest = findClosest(elements, focusedElement, key);
+    const closest = await findClosest(elements, focusedElement, key);
     if (closest) {
       requestFocus(closest);
     }

@@ -1,8 +1,9 @@
-import React, { CSSProperties, useContext } from 'react';
+import React, { useContext } from 'react';
 import { noop } from '../utils';
 import { FocusableElement } from './SpatialTypes';
 import { useSpatialRegistry, useFocusNavigator } from './SpatialHooks';
 import { useMainFocusController } from './MainFocusController';
+import { StyleProp, View, ViewStyle } from 'react-native';
 
 export type FocusableLayerContextType = {
   register: (element: FocusableElement) => void;
@@ -17,7 +18,7 @@ export function useFocusableLayer() {
 }
 
 type FocusableLayerProps = {
-  style?: CSSProperties;
+  style?: StyleProp<ViewStyle>;
 }
 const FocusableLayer: React.FC<FocusableLayerProps> = ({
   children,
@@ -29,9 +30,9 @@ const FocusableLayer: React.FC<FocusableLayerProps> = ({
 
   return (
     <FocusableLayerContext.Provider value={contextValue}>
-      <div style={style}>
+      <View style={style}>
           {children}
-      </div>
+      </View>
     </FocusableLayerContext.Provider>
   )
 }

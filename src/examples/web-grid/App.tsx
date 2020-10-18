@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import { SimpleGrid } from './examples/grid/SimpleGrid';
+import { SimpleGrid } from './SimpleGrid';
 
 function App() {
   return (

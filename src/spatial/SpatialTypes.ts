@@ -1,5 +1,16 @@
+export type Geometry = {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  top: number;
+  bottom: number;
+  left: number;
+  right: number;
+};
+
 export type FocusableElement = {
-  measure: () => DOMRect | null;
+  measure: () => Promise<Geometry | null>;
   focus: () => void;
   blur: () => void;
   canBecomeFocused: () => boolean;
@@ -7,6 +18,6 @@ export type FocusableElement = {
 }
 
 export type FocusableElementWithGeometry = {
-  geometry: DOMRect | null;
+  geometry: Geometry | null;
   element: FocusableElement;
 }

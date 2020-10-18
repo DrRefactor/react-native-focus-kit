@@ -1,12 +1,13 @@
-import React, { CSSProperties, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useFocusableLayer } from './FocusableLayer';
 import { useFunction } from '../hooks/useFunction';
 import { useImmutable } from '../hooks/useImmutable';
+import { StyleProp, View, ViewStyle } from 'react-native';
+import { measureView } from './SpatialHelpers';
 
 type FocusableProps = {
-  // todo make this platform agnostic
-  style?: CSSProperties;
-  focusedStyle?: CSSProperties;
+  style?: StyleProp<ViewStyle>;
+  focusedStyle?: StyleProp<ViewStyle>;
 };
 
 const Focusable: React.FC<FocusableProps> = ({
@@ -14,8 +15,8 @@ const Focusable: React.FC<FocusableProps> = ({
   style,
   focusedStyle
 }) => {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const measure = useFunction(() => containerRef.current?.getBoundingClientRect() ?? null);
+  const containerRef = useRef<View>(null);
+  const measure = useFunction(() => measureView(containerRef.current));
 
   const [focused, setFocused] = useState(false);
 
@@ -35,9 +36,9 @@ const Focusable: React.FC<FocusableProps> = ({
   }, [measure, register, self, unregister]);
 
   return (
-    <div style={{...style, ...focused && focusedStyle}} ref={containerRef}>
+    <View style={[style, focused && focusedStyle]} ref={containerRef}>
       {children}
-    </div>
+    </View>
   )
 }
 
