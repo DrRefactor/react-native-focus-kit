@@ -2,6 +2,7 @@ import React, { useMemo, useState, useContext } from 'react';
 import { FocusableElement } from './SpatialTypes';
 import { noop } from '../utils';
 import { useFunction } from '../hooks/useFunction';
+import { ArrowKeyEventEmitter, ArrowKeyEventEmitterContext } from '../hooks/useKeyDownListener';
 
 type MainFocusControllerContextType = {
   focusedElement?: FocusableElement;
@@ -17,7 +18,14 @@ export function useMainFocusController() {
   return useContext(MainFocusControllerContext);
 }
 
-const MainFocusController: React.FC = ({children}) => {
+type Props = {
+  arrowKeyEventEmitter: ArrowKeyEventEmitter;
+}
+
+const MainFocusController: React.FC<Props> = ({
+  children,
+  arrowKeyEventEmitter
+}) => {
   const [focusedElement, setFocusedElement] = useState<FocusableElement>();
   
   const focusElement = useFunction((element: FocusableElement) => {
@@ -35,7 +43,9 @@ const MainFocusController: React.FC = ({children}) => {
 
   return (
     <MainFocusControllerContext.Provider value={contextValue}>
-      {children}
+      <ArrowKeyEventEmitterContext.Provider value={arrowKeyEventEmitter}>
+        {children}
+      </ArrowKeyEventEmitterContext.Provider>
     </MainFocusControllerContext.Provider>
   )
 };

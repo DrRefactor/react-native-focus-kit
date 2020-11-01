@@ -1,7 +1,7 @@
 {
   "name": "react-native-focus-kit",
   "version": "0.1.0",
-  "private": true,
+  "private": false,
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "dependencies": {
