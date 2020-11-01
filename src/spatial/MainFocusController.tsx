@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useContext } from 'react';
+import React, { useMemo, useState, useContext, useEffect } from 'react';
 import { FocusableElement } from './SpatialTypes';
 import { noop } from '../utils';
 import { useFunction } from '../hooks/useFunction';
@@ -27,13 +27,14 @@ const MainFocusController: React.FC<Props> = ({
   arrowKeyEventEmitter
 }) => {
   const [focusedElement, setFocusedElement] = useState<FocusableElement>();
+
+  useEffect(() => {
+    focusedElement?.focus();
+    return () => focusedElement?.blur();
+  }, [focusedElement]);
   
   const focusElement = useFunction((element: FocusableElement) => {
-    setFocusedElement(previous => {
-      previous?.blur();
-      element.focus();
-      return element;
-    });
+    setFocusedElement(element);
   })
 
   const contextValue = useMemo<MainFocusControllerContextType>(() => ({
