@@ -73,9 +73,10 @@
     "react-native-web": "*"
   },
   "devDependencies": {
-    "react-native": "0.63",
     "@types/react-native": "0.63",
-    "react-native-web": "0.14"
+    "react-native": "0.63",
+    "react-native-web": "0.14",
+    "watch-cli": "^0.2.3"
   },
   "scripts": {
     "start": "node scripts/start.js",
@@ -83,7 +84,8 @@
     "prepare": "tsc",
     "test": "node scripts/test.js",
     "yalc-publish": "yalc publish",
-    "yalc-push": "yalc push"
+    "yalc-push": "yalc push",
+    "watch": "watch -p './src/**' -c 'yarn yalc-push'"
   },
   "eslintConfig": {
     "extends": "react-app"
