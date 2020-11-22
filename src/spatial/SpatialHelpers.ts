@@ -8,10 +8,14 @@ export function measureView(view?: View | null): Promise<Geometry | null> {
   return new Promise(
     resolve => view.measure(
       (
-        x: number,
-        y: number,
+        // These do not work for Android, use pageX/pageY then.
+        _x: number,
+        _y: number,
+
         width: number,
-        height: number
+        height: number,
+        x: number,
+        y: number
       ) => {
         resolve({
           x,
