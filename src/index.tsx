@@ -6,6 +6,7 @@ export {default as Focusable} from './spatial/Focusable';
 export {default as FocusableLayer, useFocusableLayer} from './spatial/FocusableLayer';
 export {default as MainFocusController} from './spatial/MainFocusController';
 export {ArrowKeyEvent, ArrowKey} from './hooks/useKeyDownListener';
+export {useWebArrowsEmitter} from './spatial/Emitters';
 
 
 export {useFocusNavigator, useMeasure} from './spatial/SpatialHooks';

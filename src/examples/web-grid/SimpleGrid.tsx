@@ -1,12 +1,13 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import MainFocusController from '../../spatial/MainFocusController';
 import FocusableLayer from '../../spatial/FocusableLayer';
-import { range, webArrowsEventEmitter } from '../../utils';
+import { range } from '../../utils';
 import Focusable from '../../spatial/Focusable';
 import { View } from 'react-native';
+import {useWebArrowsEmitter} from '../../spatial/Emitters'
 
 export const SimpleGrid: React.FC = () => {
-  const arrowEmitter = useRef(webArrowsEventEmitter()).current;
+  const arrowEmitter = useWebArrowsEmitter();
   return (
     <MainFocusController
       arrowKeyEventEmitter={arrowEmitter}

@@ -1,5 +1,3 @@
-import { ArrowKeyEventEmitter } from "./hooks/useKeyDownListener";
-
 export function noop() {}
 
 export function range(length: number) {
@@ -8,13 +6,4 @@ export function range(length: number) {
 
 export function logError(message: string) {
   console.error(`(react-native-focus-kit) ${message}`);
-}
-
-export function webArrowsEventEmitter(): ArrowKeyEventEmitter {
-  // STUB
-  // TODO implement emitters for web, atv, tvOS
-  return {
-    on: () => {},
-    off: () => {}
-  }
 }

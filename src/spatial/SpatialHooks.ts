@@ -165,6 +165,8 @@ export function useFocusNavigator({
 }
 
 export function useSpatialRegistry() {
+  // todo
+  // use ref instead of state and array.push instead of copying
   const [elements, setElements] = useState<FocusableElement[]>([]);
 
   const register = useCallback((element: FocusableElement) => {
