@@ -1,9 +1,9 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { noop } from '../utils';
 import { FocusableElement } from './SpatialTypes';
 import { useSpatialRegistry, useFocusNavigator } from './SpatialHooks';
-import { useMainFocusController } from './MainFocusController';
 import { StyleProp, View, ViewStyle } from 'react-native';
+import { useFunction } from '../hooks/useFunction';
 
 export type FocusableLayerContextType = {
   register: (element: FocusableElement) => void;
@@ -24,9 +24,19 @@ const FocusableLayer: React.FC<FocusableLayerProps> = ({
   children,
   style
 }) => {
+  const [focusedElement, setFocusedElement] = useState<FocusableElement>();
+
+  useEffect(() => {
+    focusedElement?.focus();
+    return () => focusedElement?.blur();
+  }, [focusedElement]);
+  
+  const requestFocus = useFunction((element: FocusableElement) => {
+    setFocusedElement(element);
+  })
+
   const {elements, contextValue} = useSpatialRegistry();
-  const {focus, focusedElement} = useMainFocusController();
-  useFocusNavigator({elements, requestFocus: focus, focusedElement});
+  useFocusNavigator({elements, requestFocus, focusedElement});
 
   return (
     <FocusableLayerContext.Provider value={contextValue}>
