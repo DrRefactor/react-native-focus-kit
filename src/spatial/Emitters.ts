@@ -25,6 +25,7 @@ export function useWebArrowsEmitter(): ArrowKeyEventEmitter {
     document.addEventListener('keydown', (event) => {
       const arrow = keyCodeToArrow[event.keyCode as WebKeyCode];
       if (arrow != null) {
+        event.preventDefault();
         emitter.emit(ArrowKeyEvent.Press, arrow);
       }
     })
